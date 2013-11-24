@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: graphentheorie
+Bundle-SymbolicName: graphentheorie
+Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: graphentheorie.jar,
+ forms-1.3.0.jar
+Export-Package: at.spengergasse.moe15300,
+ at.spengergasse.moe15300.model,
+ at.spengergasse.moe15300.model.matrix,
+ at.spengergasse.moe15300.model.matrix.implementation,
+ at.spengergasse.moe15300.util,
+ com.jgoodies.forms.builder,
+ com.jgoodies.forms.debug,
+ com.jgoodies.forms.factories,
+ com.jgoodies.forms.layout,
+ com.jgoodies.forms.util
