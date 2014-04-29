@@ -1,6 +1,7 @@
 package at.spengergasse.moe15300.view;
 
 
+import at.spengergasse.moe15300.util.AppContextProvider;
 import at.spengergasse.moe15300.util.Loggable;
 import org.slf4j.Logger;
 
@@ -10,8 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class AdjacencyFrame extends JFrame {
-    private static final int INITIAL_NODES = 5;
-
     @Loggable
     private Logger log;
 
@@ -24,7 +23,7 @@ public class AdjacencyFrame extends JFrame {
 
     public AdjacencyFrame() {
         mainPanel = new JPanel(new BorderLayout());
-        checkboxPanel =  new AdjacencyPanel(this, INITIAL_NODES);
+        checkboxPanel = AppContextProvider.getContext().getBean("adjacencyPanel", AdjacencyPanel.class);
         controlPanel = new JPanel(new BorderLayout());
         directedPanel = new JPanel(new FlowLayout());
         nodeControlPanel = new JPanel(new GridLayout(1, 2));

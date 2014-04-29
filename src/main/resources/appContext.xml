@@ -3,8 +3,14 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
+    <bean class="at.spengergasse.moe15300.util.LoggableInjector" />
+    <bean id="appContextProvider" class="at.spengergasse.moe15300.util.AppContextProvider" />
+
     <bean id="adjacencyFrame" class="at.spengergasse.moe15300.view.AdjacencyFrame" />
 
-    <bean class="at.spengergasse.moe15300.util.LoggableInjector" />
-     
+    <bean id="adjacencyPanel" class="at.spengergasse.moe15300.view.AdjacencyPanel">
+        <constructor-arg><ref bean="adjacencyFrame" /></constructor-arg>
+        <constructor-arg type="int"><value>5</value></constructor-arg>
+    </bean>
+
 </beans>
