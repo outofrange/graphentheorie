@@ -4,12 +4,14 @@ package at.spengergasse.moe15300.view;
 import at.spengergasse.moe15300.util.Loggable;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+@Component
 public class AdjacencyFrame extends JFrame {
     @Loggable
     private Logger log;

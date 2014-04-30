@@ -2,10 +2,14 @@ package at.spengergasse.moe15300.view;
 
 import at.spengergasse.moe15300.util.Loggable;
 import org.slf4j.Logger;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.awt.*;
 
+@Component
+@Scope("prototype")
 final class NodeBox extends JButton {
     @Loggable
     private Logger log;
