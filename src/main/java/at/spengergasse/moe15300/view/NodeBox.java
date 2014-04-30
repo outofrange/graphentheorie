@@ -11,18 +11,22 @@ final class NodeBox extends JButton {
     private Logger log;
 
     private final Color bgNotSelected;
-    private final int posX;
-    private final int posY;
+    private int posX;
+    private int posY;
     private boolean marked;
 
-    public NodeBox(int posX, int posY) {
-        log.trace("Creating new node " + posX + " / " + posY);
-
-        this.posX = posX;
-        this.posY = posY;
+    public NodeBox() {
         this.marked = false;
         this.bgNotSelected = getBackground();
     }
+
+	public void setX(int x) {
+		this.posX = x;
+	}
+
+	public void setY(int y) {
+		this.posX = y;
+	}
 
     void toggleButton() {
         log.debug("Toggling " + toString());

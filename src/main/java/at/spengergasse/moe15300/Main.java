@@ -1,9 +1,9 @@
 package at.spengergasse.moe15300;
 
-import at.spengergasse.moe15300.util.AppContextProvider;
 import at.spengergasse.moe15300.util.Loggable;
 import at.spengergasse.moe15300.view.AdjacencyFrame;
 import org.slf4j.Logger;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.swing.*;
 
@@ -18,7 +18,7 @@ public class Main {
             log.warn("Couldn't set look and feel to system default.", e);
         }
 
-
-        AppContextProvider.getContext().getBean("adjacencyFrame", AdjacencyFrame.class);
+		new ClassPathXmlApplicationContext("classpath:appContext.xml").getBean("adjacencyFrame", AdjacencyFrame.class);
+        //AppContextProvider.getContext().getBean("adjacencyFrame", AdjacencyFrame.class);
     }
 }

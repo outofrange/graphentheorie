@@ -14,14 +14,13 @@ public class AdjacencyFrame extends JFrame {
     @Loggable
     private Logger log;
 
-    private final JPanel mainPanel, controlPanel, directedPanel, nodeControlPanel;
-    private final JButton addNodeButton, removeNodeButton, computeResultsButton;
-    private final AdjacencyPanel checkboxPanel;
-    private final JLabel directedLabel;
-    private final JCheckBox directedBox;
+    private JPanel mainPanel, controlPanel, directedPanel, nodeControlPanel;
+    private JButton addNodeButton, removeNodeButton, computeResultsButton;
+    private AdjacencyPanel checkboxPanel;
+    private JLabel directedLabel;
+    private JCheckBox directedBox;
 
-
-    public AdjacencyFrame() {
+    public void init() {
         mainPanel = new JPanel(new BorderLayout());
         checkboxPanel = AppContextProvider.getContext().getBean("adjacencyPanel", AdjacencyPanel.class);
         controlPanel = new JPanel(new BorderLayout());
