@@ -1,5 +1,6 @@
 package at.spengergasse.moe15300.model;
 
+import at.spengergasse.moe15300.model.matrix.implementation.SquareMatrixArrayList;
 import junit.framework.Assert;
 
 import org.apache.logging.log4j.LogManager;
@@ -7,11 +8,10 @@ import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import at.spengergasse.moe15300.model.matrix.IntegerMatrix;
-import at.spengergasse.moe15300.model.matrix.implementation.SquareMatrixArrayList;
 import at.spengergasse.moe15300.util.Timer;
 
 public class GraphTest {
-	private static final Logger log = LogManager.getLogger(GraphTest.class);
+	/*private static final Logger log = LogManager.getLogger(GraphTest.class);
 
 	@Test
 	public void testDistanceAndWegMatrix() {
@@ -91,7 +91,6 @@ public class GraphTest {
 		log.info("Adding a directed edge in graph of size " + size + " took "
 				+ Timer.getTime(0) + " ms");
 
-		log.info("\n" + graph.getDistanzMatrix().toString());
 
 		log.info("----------");
 	}
@@ -111,5 +110,5 @@ public class GraphTest {
 
 		System.out.println("Mean time to iterate " + runs + "x times: " + sum
 				/ runs);
-	}
+	}*/
 }

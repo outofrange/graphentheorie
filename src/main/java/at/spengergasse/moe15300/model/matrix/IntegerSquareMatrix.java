@@ -1,5 +1,7 @@
 package at.spengergasse.moe15300.model.matrix;
 
+import java.util.List;
+
 public abstract class IntegerSquareMatrix extends IntegerMatrix {
 	public IntegerSquareMatrix() {
 		super();
@@ -43,6 +45,26 @@ public abstract class IntegerSquareMatrix extends IntegerMatrix {
 
 		return true;
 	}
+
+    public static boolean isValid(List<List<Integer>> matrix) {
+        final int rows = matrix.size();
+        if (rows == 0) {
+            return false;
+        }
+
+        final int lengthFirstRow = matrix.get(0).size();
+        if (lengthFirstRow == 0) {
+            return false;
+        }
+
+        for (int row = 1; row < rows; row++) {
+            if (matrix.get(row).size() != rows) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
 	public abstract void expand(int nodesToExpand);
 }

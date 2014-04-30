@@ -11,6 +11,7 @@ public class SquareMatrixArrayList extends IntegerSquareMatrix {
 
 	public SquareMatrixArrayList() {
 		super();
+        this.matrix = generateZeroMatrix(0);
 	}
 
 	/**
@@ -20,11 +21,15 @@ public class SquareMatrixArrayList extends IntegerSquareMatrix {
 	 *            The size of each side of the two dimensional matrix
 	 */
 	public SquareMatrixArrayList(int side) {
-		this.matrix = generateZeroMatrix(side, side);
+		this.matrix = generateZeroMatrix(side);
 	}
 
 	public SquareMatrixArrayList(int[][] matrix) {
-		this.matrix = generateZeroMatrix(matrix.length, matrix[0].length);
+        if(!isValid(matrix)) {
+            throw new IllegalArgumentException("This isn't a valid matrix!");
+        }
+
+		this.matrix = generateZeroMatrix(matrix.length);
 
 		for (int i = 0; i < matrix.length; i++) {
 			for (int j = 0; j < matrix[0].length; j++) {
@@ -34,13 +39,7 @@ public class SquareMatrixArrayList extends IntegerSquareMatrix {
 	}
 
 	private SquareMatrixArrayList(List<List<Integer>> matrix) {
-		this.matrix = generateZeroMatrix(matrix.size(), matrix.get(0).size());
-
-		for (int i = 0; i < matrix.size(); i++) {
-			for (int j = 0; j < matrix.get(0).size(); j++) {
-				this.matrix.get(i).set(j, matrix.get(i).get(j));
-			}
-		}
+		setMatrix(matrix);
 	}
 
 	@Override
@@ -51,25 +50,36 @@ public class SquareMatrixArrayList extends IntegerSquareMatrix {
 	@Override
 	public void expand(int nodesToExpand) {
 		for (int i = 0; i < nodesToExpand; i++) {
-			final int side = side();
-			matrix.add(new ArrayList<Integer>());
-			for (int row = 0; row < side; row++) {
+            ArrayList<Integer> newRow = new ArrayList<Integer>();
+            matrix.add(newRow);
+            final int side = side();
+
+			for (int row = 0; row < side-1; row++) {
 				matrix.get(row).add(0);
 			}
+
+            for(int column = 0; column < side; column++) {
+                newRow.add(0);
+            }
 		}
 
 	}
 
-	protected List<List<Integer>> generateZeroMatrix(int height, int width) {
-		List<List<Integer>> matrix = new ArrayList<List<Integer>>(height);
-		for (int i = 0; i < height; i++) {
-			matrix.add(i, new ArrayList<Integer>(width));
-			for (int j = 0; j < width; j++) {
-				matrix.get(i).add(0);
-			}
-		}
+	protected List<List<Integer>> generateZeroMatrix(int side) {
+        // TODO refactor
+        if (side != 0) {
+            List<List<Integer>> matrix = new ArrayList<List<Integer>>(side);
+            for (int i = 0; i < side; i++) {
+                matrix.add(i, new ArrayList<Integer>(side));
+                for (int j = 0; j < side; j++) {
+                    matrix.get(i).add(0);
+                }
+            }
 
-		return matrix;
+            return matrix;
+        } else {
+            return new ArrayList<List<Integer>>();
+        }
 	}
 
 	@Override
@@ -87,20 +97,24 @@ public class SquareMatrixArrayList extends IntegerSquareMatrix {
 
 	@Override
 	public void multiply(IntegerMatrix otherMatrix) {
+        if(!isValid(matrix)) {
+            throw new IllegalArgumentException("This isn't a valid matrix!");
+        }
+
 		if (width() != otherMatrix.height())
 			throw new IllegalArgumentException(
 					"otherMatrix' height has to be as big as this matrix' width.");
 
-		List<List<Integer>> resultMatrix = generateZeroMatrix(height(), width());
+		List<List<Integer>> resultMatrix = generateZeroMatrix(side());
 
-		for (int zeile = 0; zeile < matrix.size(); zeile++) {
-			for (int spalte = 0; spalte < matrix.get(zeile).size(); spalte++) {
+		for (int row = 0; row < matrix.size(); row++) {
+			for (int column = 0; column < matrix.get(row).size(); column++) {
 				int sum = 0;
 				for (int i = 0; i < matrix.size(); i++) {
-					sum += get(zeile, i) * otherMatrix.get(i, spalte);
+					sum += get(row, i) * otherMatrix.get(i, column);
 				}
 
-				resultMatrix.get(zeile).set(spalte, sum);
+				resultMatrix.get(row).set(column, sum);
 			}
 		}
 
@@ -111,6 +125,19 @@ public class SquareMatrixArrayList extends IntegerSquareMatrix {
 	public void set(int row, int column, int value) {
 		matrix.get(row).set(column, value);
 	}
+
+    public void setMatrix(List<List<Integer>> matrix) {
+        if(!isValid(matrix)) {
+            throw new IllegalArgumentException("This isn't a valid matrix");
+        }
+
+        this.matrix = generateZeroMatrix(matrix.size());
+        for (int i = 0; i < matrix.size(); i++) {
+            for (int j = 0; j < matrix.get(0).size(); j++) {
+                this.matrix.get(i).set(j, matrix.get(i).get(j));
+            }
+        }
+    }
 
 	@Override
 	public void setAll(int value) {

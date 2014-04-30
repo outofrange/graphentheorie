@@ -1,25 +1,28 @@
 package at.spengergasse.moe15300.model;
 
+import at.spengergasse.moe15300.model.matrix.implementation.SquareMatrixArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import at.spengergasse.moe15300.model.matrix.IntegerSquareMatrix;
 import at.spengergasse.moe15300.model.matrix.implementation.SquareMatrixHashMap;
+import org.springframework.stereotype.Component;
 
+@Component
 public class Graph {
 	private static final Logger log = LogManager.getLogger(Graph.class);
 	public static final int INFINITE = -1;
 
-	private final IntegerSquareMatrix adjazentsMatrix;
+	private IntegerSquareMatrix adjazentsMatrix;
 	private IntegerSquareMatrix wegMatrix;
 	private IntegerSquareMatrix distanceMatrix;
 
 	private boolean needToRebuildMatrices = true;
 
-	public Graph(int vertices) {
-		adjazentsMatrix = new SquareMatrixHashMap(vertices);
-		wegMatrix = new SquareMatrixHashMap(vertices);
-		distanceMatrix = new SquareMatrixHashMap(vertices);
+	public void init() {
+		adjazentsMatrix = new SquareMatrixArrayList();
+		wegMatrix = new SquareMatrixArrayList();
+		distanceMatrix = new SquareMatrixArrayList();
 	}
 
 	public void addEdge(int from, int to, boolean undirected) {
@@ -60,8 +63,9 @@ public class Graph {
 
 	public void addVertice() {
 		adjazentsMatrix.expand(1);
-		wegMatrix.expand(1);
-		distanceMatrix.expand(1);
+        distanceMatrix.expand(1);
+        wegMatrix.expand(1);
+        needToRebuildMatrices = true;
 	}
 
 	private void renewMatrices() {
