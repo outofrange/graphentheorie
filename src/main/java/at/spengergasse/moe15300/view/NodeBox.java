@@ -25,7 +25,7 @@ final class NodeBox extends JButton {
 	}
 
 	public void setY(int y) {
-		this.posX = y;
+		this.posY = y;
 	}
 
     void toggleButton() {

@@ -1,9 +1,9 @@
 package at.spengergasse.moe15300.view;
 
 
-import at.spengergasse.moe15300.util.AppContextProvider;
 import at.spengergasse.moe15300.util.Loggable;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,13 +16,13 @@ public class AdjacencyFrame extends JFrame {
 
     private JPanel mainPanel, controlPanel, directedPanel, nodeControlPanel;
     private JButton addNodeButton, removeNodeButton, computeResultsButton;
+	@Autowired
     private AdjacencyPanel checkboxPanel;
     private JLabel directedLabel;
     private JCheckBox directedBox;
 
     public void init() {
         mainPanel = new JPanel(new BorderLayout());
-        checkboxPanel = AppContextProvider.getContext().getBean("adjacencyPanel", AdjacencyPanel.class);
         controlPanel = new JPanel(new BorderLayout());
         directedPanel = new JPanel(new FlowLayout());
         nodeControlPanel = new JPanel(new GridLayout(1, 2));
@@ -30,7 +30,7 @@ public class AdjacencyFrame extends JFrame {
         addNodeButton = new JButton("Add Node");
         removeNodeButton = new JButton("Remove Node");
         computeResultsButton = new JButton("Compute Results");
-        directedLabel = new JLabel("Directed? ");
+        directedLabel = new JLabel("Directed?");
         directedBox = new JCheckBox();
 
         createLayout();

@@ -4,6 +4,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
        default-init-method="init">
 
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+
     <bean id="loggableInjector" class="at.spengergasse.moe15300.util.LoggableInjector" />
 
     <bean id="appContextProvider" class="at.spengergasse.moe15300.util.AppContextProvider" />
