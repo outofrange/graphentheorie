@@ -45,7 +45,7 @@ public class AdjacencyPanel extends JPanel {
         setLayout(gridLayout);
 
         boxes = new ArrayList<>();
-        for (int i = 0; i < INITAL_NODES; i++) {
+        for (int i = 0; i < INITIAL_NODES; i++) {
             addNode();
         }
     }
