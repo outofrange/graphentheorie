@@ -114,9 +114,10 @@ public class AdjacencyPanel extends JPanel {
                     parent.getDirectedBox().setSelected(true);
                     parent.getDirectedBox().setEnabled(false);
                 } else {
-
                     parent.getDirectedBox().setEnabled(true);
                 }
+
+                parent.recomputeIfEnabled();
             }
         });
 
