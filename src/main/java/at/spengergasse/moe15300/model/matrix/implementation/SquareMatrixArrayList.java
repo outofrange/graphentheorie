@@ -54,7 +54,7 @@ public class SquareMatrixArrayList extends IntegerSquareMatrix {
             matrix.add(newRow);
             final int side = side();
 
-			for (int row = 0; row < side-1; row++) {
+			for (int row = 0; row < side - 1; row++) {
 				matrix.get(row).add(0);
 			}
 
@@ -65,7 +65,18 @@ public class SquareMatrixArrayList extends IntegerSquareMatrix {
 
 	}
 
-	protected List<List<Integer>> generateZeroMatrix(int side) {
+    @Override
+    public void shrink(int nodesToShrink) {
+        for (int i = 0; i < nodesToShrink; i++) {
+            int side = side();
+            for (int row = 0; row < side-1; row++) {
+                matrix.get(row).remove(side-1);
+            }
+            matrix.remove(side-1);
+        }
+    }
+
+    protected List<List<Integer>> generateZeroMatrix(int side) {
         // TODO refactor
         if (side != 0) {
             List<List<Integer>> matrix = new ArrayList<List<Integer>>(side);

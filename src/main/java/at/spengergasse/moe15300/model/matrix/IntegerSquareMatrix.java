@@ -67,4 +67,6 @@ public abstract class IntegerSquareMatrix extends IntegerMatrix {
     }
 
 	public abstract void expand(int nodesToExpand);
+
+    public abstract void shrink(int nodesToShrink);
 }

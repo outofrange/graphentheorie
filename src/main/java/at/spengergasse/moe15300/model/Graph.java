@@ -1,114 +1,119 @@
 package at.spengergasse.moe15300.model;
 
+import at.spengergasse.moe15300.model.matrix.IntegerSquareMatrix;
 import at.spengergasse.moe15300.model.matrix.implementation.SquareMatrixArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import at.spengergasse.moe15300.model.matrix.IntegerSquareMatrix;
-import at.spengergasse.moe15300.model.matrix.implementation.SquareMatrixHashMap;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Graph {
-	private static final Logger log = LogManager.getLogger(Graph.class);
-	public static final int INFINITE = -1;
+    private static final Logger log = LogManager.getLogger(Graph.class);
+    public static final int INFINITE = -1;
 
-	private IntegerSquareMatrix adjazentsMatrix;
-	private IntegerSquareMatrix wegMatrix;
-	private IntegerSquareMatrix distanceMatrix;
+    private IntegerSquareMatrix adjazentsMatrix;
+    private IntegerSquareMatrix wegMatrix;
+    private IntegerSquareMatrix distanceMatrix;
 
-	private boolean needToRebuildMatrices = true;
+    private boolean needToRebuildMatrices = true;
 
-	public void init() {
-		adjazentsMatrix = new SquareMatrixArrayList();
-		wegMatrix = new SquareMatrixArrayList();
-		distanceMatrix = new SquareMatrixArrayList();
-	}
+    public void init() {
+        adjazentsMatrix = new SquareMatrixArrayList();
+        wegMatrix = new SquareMatrixArrayList();
+        distanceMatrix = new SquareMatrixArrayList();
+    }
 
-	public void addEdge(int from, int to, boolean undirected) {
-		if (adjazentsMatrix.get(from, to) == 0) {
-			adjazentsMatrix.set(from, to, 1);
-			if (undirected) {
-				adjazentsMatrix.set(to, from, 1);
-			}
-		} else {
-			adjazentsMatrix.set(from, to, 0);
-			if (undirected) {
-				adjazentsMatrix.set(to, from, 0);
-			}
-		}
+    public void addEdge(int from, int to, boolean undirected) {
+        if (adjazentsMatrix.get(from, to) == 0) {
+            adjazentsMatrix.set(from, to, 1);
+            if (undirected) {
+                adjazentsMatrix.set(to, from, 1);
+            }
+        } else {
+            adjazentsMatrix.set(from, to, 0);
+            if (undirected) {
+                adjazentsMatrix.set(to, from, 0);
+            }
+        }
 
-		needToRebuildMatrices = true;
-	}
-
-	public IntegerSquareMatrix getWegMatrix() {
-		if (needToRebuildMatrices) {
-			renewMatrices();
-		}
-
-		return (IntegerSquareMatrix) wegMatrix.clone();
-	}
-
-	public IntegerSquareMatrix getDistanzMatrix() {
-		if (needToRebuildMatrices) {
-			renewMatrices();
-		}
-
-		return (IntegerSquareMatrix) distanceMatrix.clone();
-	}
-
-	public int getVertices() {
-		return adjazentsMatrix.side();
-	}
-
-	public void addVertice() {
-		adjazentsMatrix.expand(1);
-        distanceMatrix.expand(1);
-        wegMatrix.expand(1);
         needToRebuildMatrices = true;
-	}
+    }
 
-	private void renewMatrices() {
-		IntegerSquareMatrix multiplyMatrix = (IntegerSquareMatrix) adjazentsMatrix
-				.clone();
-		IntegerSquareMatrix multiplyMatrixFromBefore = null;
-		IntegerSquareMatrix multiplyMatrixFromBeforeBefore = null;
+    public IntegerSquareMatrix getWegMatrix() {
+        if (needToRebuildMatrices) {
+            renewMatrices();
+        }
 
-		distanceMatrix.setAll(INFINITE);
-		distanceMatrix.setWholeDiagonal(0);
+        return (IntegerSquareMatrix) wegMatrix.clone();
+    }
 
-		wegMatrix.setAll(0);
-		wegMatrix.setWholeDiagonal(1);
+    public IntegerSquareMatrix getDistanzMatrix() {
+        if (needToRebuildMatrices) {
+            renewMatrices();
+        }
 
-		final int vertices = adjazentsMatrix.side();
+        return (IntegerSquareMatrix) distanceMatrix.clone();
+    }
 
-		for (int distance = 1; distance < vertices
-				&& !multiplyMatrix.equals(multiplyMatrixFromBeforeBefore); distance++) {
-			log.trace("Trying with distance set to " + distance);
-			for (int row = 0; row < vertices; row++) {
-				for (int column = 0; column < vertices; column++) {
-					if (distanceMatrix.get(row, column) == INFINITE
-							&& multiplyMatrix.get(row, column) != 0) {
-						distanceMatrix.set(row, column, distance);
-						wegMatrix.set(row, column, 1);
-					}
-				}
-			}
+    public int getVertices() {
+        return adjazentsMatrix.side();
+    }
 
-			multiplyMatrixFromBeforeBefore = multiplyMatrixFromBefore;
-			multiplyMatrixFromBefore = (IntegerSquareMatrix) multiplyMatrix
-					.clone();
-			multiplyMatrix.multiply(adjazentsMatrix);
-		}
+    public void addVertice() {
+        adjazentsMatrix.expand(1);
+        wegMatrix.expand(1);
+        distanceMatrix.expand(1);
+        needToRebuildMatrices = true;
+    }
 
-		needToRebuildMatrices = false;
-	}
+    public void removeVertice() {
+        adjazentsMatrix.shrink(1);
+        wegMatrix.shrink(1);
+        distanceMatrix.shrink(1);
+        needToRebuildMatrices = true;
+    }
 
-	public void iterateThroughTheGraph() {
-		for (int i = 0; i < adjazentsMatrix.side(); i++) {
-			for (int j = 0; j < adjazentsMatrix.side(); j++) {
-				adjazentsMatrix.get(i, j);
-			}
-		}
-	}
+    private void renewMatrices() {
+        IntegerSquareMatrix multiplyMatrix = (IntegerSquareMatrix) adjazentsMatrix
+                .clone();
+        IntegerSquareMatrix multiplyMatrixFromBefore = null;
+        IntegerSquareMatrix multiplyMatrixFromBeforeBefore = null;
+
+        distanceMatrix.setAll(INFINITE);
+        distanceMatrix.setWholeDiagonal(0);
+
+        wegMatrix.setAll(0);
+        wegMatrix.setWholeDiagonal(1);
+
+        final int vertices = adjazentsMatrix.side();
+
+        for (int distance = 1; distance < vertices
+                && !multiplyMatrix.equals(multiplyMatrixFromBeforeBefore); distance++) {
+            log.trace("Trying with distance set to " + distance);
+            for (int row = 0; row < vertices; row++) {
+                for (int column = 0; column < vertices; column++) {
+                    if (distanceMatrix.get(row, column) == INFINITE
+                            && multiplyMatrix.get(row, column) != 0) {
+                        distanceMatrix.set(row, column, distance);
+                        wegMatrix.set(row, column, 1);
+                    }
+                }
+            }
+
+            multiplyMatrixFromBeforeBefore = multiplyMatrixFromBefore;
+            multiplyMatrixFromBefore = (IntegerSquareMatrix) multiplyMatrix
+                    .clone();
+            multiplyMatrix.multiply(adjazentsMatrix);
+        }
+
+        needToRebuildMatrices = false;
+    }
+
+    public void iterateThroughTheGraph() {
+        for (int i = 0; i < adjazentsMatrix.side(); i++) {
+            for (int j = 0; j < adjazentsMatrix.side(); j++) {
+                adjazentsMatrix.get(i, j);
+            }
+        }
+    }
 }

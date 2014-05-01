@@ -4,6 +4,7 @@ package at.spengergasse.moe15300.view;
 import at.spengergasse.moe15300.model.Graph;
 import at.spengergasse.moe15300.util.AppContextProvider;
 import at.spengergasse.moe15300.util.Loggable;
+import at.spengergasse.moe15300.view.components.AdjacencyPanel;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -83,14 +84,22 @@ public class AdjacencyFrame extends JFrame {
         computeResultsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Graph graph = AppContextProvider.getContext().getBean("graph", Graph.class);
-                log.info("Wegmatrix: " + graph.getWegMatrix().toString());
-                log.info("Distanzmatrix: " + graph.getDistanzMatrix().toString());
+                computeResults();
             }
         });
     }
 
     public boolean isGraphDirected() {
         return directedBox.isSelected();
+    }
+
+    private void computeResults() {
+        Graph graph = AppContextProvider.getContext().getBean("graph", Graph.class);
+        log.info("Wegmatrix:\n" + graph.getWegMatrix().toString());
+        log.info("Distanzmatrix:\n" + graph.getDistanzMatrix().toString());
+
+        ResultFrame results = AppContextProvider.getContext().getBean("resultFrame", ResultFrame.class);
+        results.update();
+        results.setVisible(true);
     }
 }

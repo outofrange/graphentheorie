@@ -1,8 +1,13 @@
-package at.spengergasse.moe15300.view;
+package at.spengergasse.moe15300.view.components;
 
+import at.spengergasse.moe15300.model.Graph;
+import at.spengergasse.moe15300.util.AppContextProvider;
 import at.spengergasse.moe15300.util.Loggable;
+import at.spengergasse.moe15300.view.AdjacencyFrame;
 import org.slf4j.Logger;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,21 +15,27 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
+public class AdjacencyPanel extends JPanel {
+    private static final int INITAL_NODES = 5;
 
-final class AdjacencyPanel extends JPanel {
     @Loggable
     private Logger log;
     private static final int GAP = 5;
 
-    private final AdjacencyFrame parent;
-    private final List<List<NodeBox>> boxes;
-    private final GridLayout gridLayout;
-    
+    @Resource
+    private AdjacencyFrame parent;
+
+    @Resource
+    private Graph graph;
+
+    private List<List<NodeBox>> boxes;
+    private GridLayout gridLayout;
+
     private int nodeCount;
 
 
-    public AdjacencyPanel(final AdjacencyFrame parent, final int initialNodes) {
-        this.parent = parent;
+    public void init() {
         this.nodeCount = 0;
 
         gridLayout = new GridLayout();
@@ -34,13 +45,15 @@ final class AdjacencyPanel extends JPanel {
         setLayout(gridLayout);
 
         boxes = new ArrayList<>();
-        for (int i = 0; i < initialNodes; i++) {
+        for (int i = 0; i < INITAL_NODES; i++) {
             addNode();
         }
     }
 
     public void addNode() {
         log.debug("Adding node. Currently  " + nodeCount + " nodes displayed.");
+
+        graph.addVertice();
 
         for (int row = 0; row < nodeCount; row++) {
             boxes.get(row).add(createNewNodeBox(nodeCount, row));
@@ -57,6 +70,8 @@ final class AdjacencyPanel extends JPanel {
 
     public void removeNode() {
         if (nodeCount > 2) {
+            graph.removeVertice();
+
             boxes.remove(boxes.size() - 1);
             for (int i = 0; i < boxes.size(); i++) {
                 boxes.get(i).remove(boxes.get(i).size() - 1);
@@ -85,7 +100,7 @@ final class AdjacencyPanel extends JPanel {
     }
 
     private NodeBox createNewNodeBox(final int x, final int y) {
-        final NodeBox checkBox = new NodeBox(x, y);
+        final NodeBox checkBox = AppContextProvider.getContext().getBean("nodeBox", NodeBox.class);
 
         checkBox.addActionListener(new ActionListener() {
             @Override
@@ -102,5 +117,10 @@ final class AdjacencyPanel extends JPanel {
 
     public void toggleButton(final int x, final int y) {
         boxes.get(y).get(x).toggleButton();
+        graph.addEdge(y, x, false);
+    }
+
+    public Graph getGraph() {
+        return graph;
     }
 }

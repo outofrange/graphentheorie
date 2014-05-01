@@ -1,4 +1,4 @@
-package at.spengergasse.moe15300.view;
+package at.spengergasse.moe15300.view.components;
 
 import at.spengergasse.moe15300.util.Loggable;
 import org.slf4j.Logger;
