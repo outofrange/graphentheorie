@@ -23,20 +23,13 @@ public class Graph {
         distanceMatrix = new SquareMatrixArrayList();
     }
 
-    public void addEdge(int from, int to, boolean undirected) {
-        if (adjazentsMatrix.get(from, to) == 0) {
-            adjazentsMatrix.set(from, to, 1);
-            if (undirected) {
-                adjazentsMatrix.set(to, from, 1);
-            }
-        } else {
-            adjazentsMatrix.set(from, to, 0);
-            if (undirected) {
-                adjazentsMatrix.set(to, from, 0);
-            }
-        }
-
+    public void toggleEdge(int from, int to) {
+        toggleCell(from, to);
         needToRebuildMatrices = true;
+    }
+
+    private void toggleCell(int row, int column) {
+        adjazentsMatrix.set(row, column, adjazentsMatrix.get(row, column) == 0 ? 1 : 0);
     }
 
     public IntegerSquareMatrix getWegMatrix() {
@@ -115,5 +108,18 @@ public class Graph {
                 adjazentsMatrix.get(i, j);
             }
         }
+    }
+
+    public boolean isDirected() {
+        int side = getVertices();
+        for (int i = 0; i < side; i++) {
+            for (int j = i+1; j < side; j++) {
+                if (adjazentsMatrix.get(i, j) != adjazentsMatrix.get(j, i)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

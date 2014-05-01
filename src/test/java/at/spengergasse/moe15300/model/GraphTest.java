@@ -16,9 +16,9 @@ public class GraphTest {
 	@Test
 	public void testDistanceAndWegMatrix() {
 		Graph graph = new Graph(5);
-		graph.addEdge(1, 3, true);
-		graph.addEdge(1, 4, true);
-		graph.addEdge(2, 4, true);
+		graph.toggleEdge(1, 3, true);
+		graph.toggleEdge(1, 4, true);
+		graph.toggleEdge(2, 4, true);
 
 		IntegerMatrix distanceMatrix = new SquareMatrixArrayList(new int[][] {
 				{ 0, Graph.INFINITE, Graph.INFINITE, Graph.INFINITE,
@@ -53,17 +53,17 @@ public class GraphTest {
 		log.debug("Done constructing graph with size of " + size);
 
 		Timer.start(0);
-		graph.addEdge(100, 200, true);
+		graph.toggleEdge(100, 200, true);
 		log.info("Adding undirected edge in graph of size " + size + " took "
 				+ Timer.getTime(0) + " ms");
 
 		Timer.start(0);
-		graph.addEdge(100, 300, true);
+		graph.toggleEdge(100, 300, true);
 		log.info("Adding another undirected edge in graph of size " + size
 				+ " took " + Timer.getTime(0) + " ms");
 
 		Timer.start(0);
-		graph.addEdge(1, 2, false);
+		graph.toggleEdge(1, 2, false);
 		log.info("Adding a directed edge in graph of size " + size + " took "
 				+ Timer.getTime(0) + " ms");
 		log.info("----------");
@@ -77,17 +77,17 @@ public class GraphTest {
 		log.debug("Done constructing graph with size of " + size);
 
 		Timer.start(0);
-		graph.addEdge(1, 2, true);
+		graph.toggleEdge(1, 2, true);
 		log.info("Adding undirected edge in graph of size " + size + " took "
 				+ Timer.getTime(0) + " ms");
 
 		Timer.start(0);
-		graph.addEdge(3, 4, true);
+		graph.toggleEdge(3, 4, true);
 		log.info("Adding another undirected edge in graph of size " + size
 				+ " took " + Timer.getTime(0) + " ms");
 
 		Timer.start(0);
-		graph.addEdge(5, 6, true);
+		graph.toggleEdge(5, 6, true);
 		log.info("Adding a directed edge in graph of size " + size + " took "
 				+ Timer.getTime(0) + " ms");
 

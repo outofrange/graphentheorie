@@ -89,8 +89,12 @@ public class AdjacencyFrame extends JFrame {
         });
     }
 
-    public boolean isGraphDirected() {
+    public boolean isEdgeDirected() {
         return directedBox.isSelected();
+    }
+
+    public JCheckBox getDirectedBox() {
+        return directedBox;
     }
 
     private void computeResults() {

@@ -106,8 +106,16 @@ public class AdjacencyPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 toggleButton(x, y);
-                if (!parent.isGraphDirected() && x != y) {
+                if (!parent.isEdgeDirected() && x != y) {
                     toggleButton(y, x);
+                }
+
+                if (graph.isDirected()) {
+                    parent.getDirectedBox().setSelected(true);
+                    parent.getDirectedBox().setEnabled(false);
+                } else {
+
+                    parent.getDirectedBox().setEnabled(true);
                 }
             }
         });
@@ -117,7 +125,7 @@ public class AdjacencyPanel extends JPanel {
 
     public void toggleButton(final int x, final int y) {
         boxes.get(y).get(x).toggleButton();
-        graph.addEdge(y, x, false);
+        graph.toggleEdge(y, x);
     }
 
     public Graph getGraph() {
