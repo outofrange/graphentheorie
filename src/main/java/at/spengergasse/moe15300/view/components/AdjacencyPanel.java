@@ -17,7 +17,7 @@ import java.util.List;
 
 @Component
 public class AdjacencyPanel extends JPanel {
-    private static final int INITAL_NODES = 5;
+    private static final int INITIAL_NODES = 5;
 
     @Loggable
     private Logger log;
