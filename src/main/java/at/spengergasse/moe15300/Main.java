@@ -1,5 +1,7 @@
 package at.spengergasse.moe15300;
 
+import at.spengergasse.moe15300.model.matrix.IntegerMatrix;
+import at.spengergasse.moe15300.model.matrix.implementation.SquareMatrixArrayList;
 import at.spengergasse.moe15300.util.Loggable;
 import at.spengergasse.moe15300.view.AdjacencyFrame;
 import org.slf4j.Logger;
@@ -7,6 +9,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.swing.*;
+import java.util.List;
 
 public class Main {
     @Loggable

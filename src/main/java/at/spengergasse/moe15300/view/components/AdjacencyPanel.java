@@ -101,6 +101,8 @@ public class AdjacencyPanel extends JPanel {
 
     private NodeBox createNewNodeBox(final int x, final int y) {
         final NodeBox checkBox = AppContextProvider.getContext().getBean("nodeBox", NodeBox.class);
+        checkBox.setX(x);
+        checkBox.setY(y);
 
         checkBox.addActionListener(new ActionListener() {
             @Override

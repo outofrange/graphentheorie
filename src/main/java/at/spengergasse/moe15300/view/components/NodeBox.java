@@ -33,10 +33,12 @@ final class NodeBox extends JButton {
 	}
 
     void toggleButton() {
-        log.debug("Toggling " + toString());
-        marked = !marked;
-        setBackground(marked ? Color.BLACK : bgNotSelected);
-		setText(marked ? "1" : "");
+        if (posX != posY) {
+            log.debug("Toggling " + toString());
+            marked = !marked;
+            setBackground(marked ? Color.BLACK : bgNotSelected);
+            setText(marked ? "1" : "");
+        }
     }
 
     @Override
