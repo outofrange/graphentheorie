@@ -26,10 +26,12 @@ final class NodeBox extends JButton {
 
 	public void setX(int x) {
 		this.posX = x;
+        setToolTipText("Von " + (posY + 1) + " auf " + (posX + 1));
 	}
 
 	public void setY(int y) {
 		this.posY = y;
+        setToolTipText("Von " + (posY + 1) + " auf " + (posX + 1));
 	}
 
     void toggleButton() {

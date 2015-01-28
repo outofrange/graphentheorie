@@ -66,6 +66,24 @@ public class ResultFrame extends JFrame {
     }
 
     private void logHeader(String text) {
-        log.info("===== {} =====", text);
+        final int length = 50;
+        final char headChar = '=';
+
+        text = " " + text + " ";
+
+        final int textStart = (length - text.length()) / 2;
+
+        StringBuilder sb = new StringBuilder(length);
+
+        for(int i = 0; i < textStart; i++) {
+            sb.append(headChar);
+        }
+        sb.append(text);
+        while (sb.length() < length) {
+            sb.append(headChar);
+        }
+
+
+        log.info(sb.toString());
     }
 }
