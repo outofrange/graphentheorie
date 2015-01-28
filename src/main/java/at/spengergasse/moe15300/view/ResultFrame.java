@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 import java.util.StringJoiner;
 
 @Component
@@ -51,7 +52,7 @@ public class ResultFrame extends JFrame {
         }
 
         logHeader("Komponenten");
-        for (java.util.List<Node> component : graph.getComponents()) {
+        for (List<Node> component : graph.getComponents()) {
             StringJoiner joiner = new StringJoiner(", ");
             component.forEach(n -> joiner.add(n.toString()));
             log.info("Komponente: {}", joiner.toString());

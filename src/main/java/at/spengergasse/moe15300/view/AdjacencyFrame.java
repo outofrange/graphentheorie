@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 @Component
 public class AdjacencyFrame extends JFrame {
     private static final Pattern INPUT_PATTERN = Pattern.compile("[^\\d]*(\\d+)[^\\d]+(\\d+)[^\\d]*");
+    private static final String TITLE = "Nodes: ";
 
     @Loggable
     private Logger log;
@@ -56,7 +57,7 @@ public class AdjacencyFrame extends JFrame {
 
     private void setWindowDefaults() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Adjacencies");
+        setTitle(TITLE + checkboxPanel.INITIAL_NODES);
         setSize(300, 300);
         setLocationRelativeTo(null);
     }
@@ -88,10 +89,12 @@ public class AdjacencyFrame extends JFrame {
         addNodeButton.addActionListener(e -> {
             checkboxPanel.addNode();
             recomputeIfEnabled();
+            setTitle(TITLE + checkboxPanel.getNodeCount());
         });
         removeNodeButton.addActionListener(e -> {
             checkboxPanel.removeNode();
             recomputeIfEnabled();
+            setTitle(TITLE + checkboxPanel.getNodeCount());
         });
         computeResultsButton.addActionListener(e -> computeResults());
 
