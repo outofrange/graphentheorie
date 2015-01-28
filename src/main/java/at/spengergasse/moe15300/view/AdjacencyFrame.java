@@ -11,11 +11,14 @@ import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 public class AdjacencyFrame extends JFrame {
+    private static final Pattern INPUT_PATTERN = Pattern.compile("[^\\d]*(\\d+)[^\\d]+(\\d+)[^\\d]*");
+
     @Loggable
     private Logger log;
 
@@ -25,6 +28,7 @@ public class AdjacencyFrame extends JFrame {
     private AdjacencyPanel checkboxPanel;
     private JLabel directedLabel, autoComputeLabel;
     private JCheckBox directedBox, autoCompute;
+    private JTextField quickInput;
 
     public void init() {
         mainPanel = new JPanel(new BorderLayout());
@@ -41,6 +45,7 @@ public class AdjacencyFrame extends JFrame {
         autoComputeLabel = new JLabel("Auto?");
         directedBox = new JCheckBox();
         autoCompute = new JCheckBox();
+        quickInput = new JTextField();
 
         createLayout();
         addListeners();
@@ -63,6 +68,8 @@ public class AdjacencyFrame extends JFrame {
         mainPanel.add(computePanel, BorderLayout.SOUTH);
 
         controlPanel.add(nodeControlPanel, BorderLayout.CENTER);
+        controlPanel.add(quickInput, BorderLayout.NORTH);
+
         nodeControlPanel.add(addNodeButton);
         nodeControlPanel.add(removeNodeButton);
 
@@ -78,24 +85,40 @@ public class AdjacencyFrame extends JFrame {
     }
 
     private void addListeners() {
-        addNodeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                checkboxPanel.addNode();
-                recomputeIfEnabled();
-            }
+        addNodeButton.addActionListener(e -> {
+            checkboxPanel.addNode();
+            recomputeIfEnabled();
         });
-        removeNodeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                checkboxPanel.removeNode();
-                recomputeIfEnabled();
-            }
+        removeNodeButton.addActionListener(e -> {
+            checkboxPanel.removeNode();
+            recomputeIfEnabled();
         });
-        computeResultsButton.addActionListener(new ActionListener() {
+        computeResultsButton.addActionListener(e -> computeResults());
+
+        quickInput.addKeyListener(new KeyAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                computeResults();
+            public void keyReleased(KeyEvent e) {
+                super.keyReleased(e);
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    final String input = quickInput.getText();
+                    log.debug("Text input: {}", input);
+
+
+                    Matcher m = INPUT_PATTERN.matcher(input);
+                    if (m.matches()) {
+                        int from = Integer.valueOf(m.group(1)) - 1;
+                        int to = Integer.valueOf(m.group(2)) - 1;
+
+                        try {
+                            checkboxPanel.changeEdge(from, to);
+                            quickInput.setText("");
+                        } catch (IllegalArgumentException ex) {
+                            log.warn("Illegal input! {}", ex);
+                        }
+                    } else {
+                        log.warn("Enter two numbers!");
+                    }
+                }
             }
         });
     }

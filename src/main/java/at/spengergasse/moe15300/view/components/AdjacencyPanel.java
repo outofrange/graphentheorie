@@ -58,7 +58,7 @@ public class AdjacencyPanel extends JPanel {
             boxes.get(row).add(createNewNodeBox(nodeCount, row));
         }
 
-        boxes.add(new ArrayList<NodeBox>());
+        boxes.add(new ArrayList<>());
         for (int i = 0; i <= nodeCount; i++) {
             boxes.get(nodeCount).add(createNewNodeBox(i, nodeCount));
         }
@@ -89,9 +89,7 @@ public class AdjacencyPanel extends JPanel {
         gridLayout.setRows(nodes);
 
         for (List<NodeBox> row : boxes) {
-            for (NodeBox box : row) {
-                add(box);
-            }
+            row.forEach(this::add);
         }
 
         validate();
@@ -103,34 +101,34 @@ public class AdjacencyPanel extends JPanel {
         checkBox.setX(x);
         checkBox.setY(y);
 
-        checkBox.addActionListener(e -> {
-            if (x != y) {
-                if (! boxes.get(x).get(y).isMarked()) {
-                    graph.addEdge(new Node(x), new Node(y));
-                } else {
-                    graph.removeEdge(new Node(x), new Node(y));
-                }
-                boxes.get(x).get(y).toggleButton();
-                boxes.get(y).get(x).toggleButton();
-
-                if (graph.isDirected()) {
-
-                    parent.getDirectedBox().setSelected(true);
-                    parent.getDirectedBox().setEnabled(false);
-                } else {
-                    parent.getDirectedBox().setEnabled(true);
-                }
-
-                parent.recomputeIfEnabled();
-            }
-        });
+        checkBox.addActionListener(e -> changeEdge(x, y));
 
         return checkBox;
     }
 
-    public void toggleButton(final int x, final int y) {
+    public void changeEdge(final int x, final int y) {
+        if (x >= nodeCount || y >= nodeCount || x < 0 || y < 0) {
+            throw new IllegalArgumentException("x and y have to be between 0 and " + nodeCount);
+        }
+
         if (x != y) {
+            if (! boxes.get(x).get(y).isMarked()) {
+                graph.addEdge(new Node(x), new Node(y));
+            } else {
+                graph.removeEdge(new Node(x), new Node(y));
+            }
+            boxes.get(x).get(y).toggleButton();
             boxes.get(y).get(x).toggleButton();
+
+            if (graph.isDirected()) {
+
+                parent.getDirectedBox().setSelected(true);
+                parent.getDirectedBox().setEnabled(false);
+            } else {
+                parent.getDirectedBox().setEnabled(true);
+            }
+
+            parent.recomputeIfEnabled();
         }
     }
 }
