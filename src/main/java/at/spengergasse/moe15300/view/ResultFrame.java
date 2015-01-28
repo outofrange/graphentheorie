@@ -37,13 +37,18 @@ public class ResultFrame extends JFrame {
         wegPanel.setMatrix(graph.getWegMatrix(), "Wegmatrix");
         distanzPanel.setMatrix(graph.getDistanzMatrix(), "Distanzmatrix");
 
-        log.info("Radius: {}", graph.getRadius());
-        log.info("Durchmesser: {}", graph.getDiameter());
-        logHeader("Zentren");
-        graph.getCenters().forEach(node -> log.info(node.toString()));
+        final boolean connected = graph.isConnected();
+        log.info("Zusammenhängend: {}", connected ? "ja" : "nein");
 
-        logHeader("E(x)");
-        graph.getNodes().forEach(node -> log.info("E({}) = {}", node, graph.getEccentricity(node)));
+        if (connected) {
+            log.info("Radius: {}", graph.getRadius());
+            log.info("Durchmesser: {}", graph.getDiameter());
+            logHeader("Zentren");
+            graph.getCenters().forEach(node -> log.info(node.toString()));
+
+            logHeader("E(x)");
+            graph.getNodes().forEach(node -> log.info("E({}) = {}", node, graph.getEccentricity(node)));
+        }
 
         logHeader("Komponenten");
         for (java.util.List<Node> component : graph.getComponents()) {
