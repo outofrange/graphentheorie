@@ -8,7 +8,7 @@ import java.util.List;
  * @author Markus Möslinger
  */
 public class Node {
-    private final int id;
+    private int id;
     private final List<Node> connectedNodes = new ArrayList<>();
 
     public Node(int id) {
@@ -36,6 +36,10 @@ public class Node {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getDegree() {

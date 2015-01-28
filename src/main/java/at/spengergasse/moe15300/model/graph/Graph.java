@@ -7,7 +7,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -98,11 +97,17 @@ public class Graph {
         nodes.remove(node);
         node.getConnectedNodes().forEach(connectedNode -> connectedNode.removeEdge(node));
 
+        // nachrücken der id der nachfolgenden knoten
+        for (int i = node.getId(); i < nodes.size(); i++) {
+            Node n = nodes.get(i);
+            n.setId(n.getId() - 1);
+        }
+
         // Wenns der letzte Knoten war, dann die Matrizzen verkleinern, ansonsten "ausnullen"
         if (node.getId() == adjacencyMatrix.side() - 1) {
             adjacencyMatrix.shrink(1);
         } else {
-            adjacencyMatrix.setValueInRowAndColumn(node.getId(), 0);
+            adjacencyMatrix.deleteRowAndColumn(node.getId());
         }
 
         needToRebuildMatrices = true;
@@ -118,11 +123,11 @@ public class Graph {
         IntegerSquareMatrix multiplyMatrixFromBeforeBefore = null;
 
         // Distanzen werden als unendlich angenommen, außer von einem Knoten zu sich selbst
-        distanceMatrix.setAll(INFINITE);
+        distanceMatrix = new SquareMatrixArrayList(adjacencyMatrix.side(), INFINITE);
         distanceMatrix.setWholeDiagonal(0);
 
         // Wege werden als fehlend angenommen, außer von einem Knoten zu sich selbst
-        wegMatrix.setAll(0);
+        wegMatrix = new SquareMatrixArrayList(adjacencyMatrix.side(), 0);
         wegMatrix.setWholeDiagonal(1);
 
         final int nodes = adjacencyMatrix.side();
@@ -192,6 +197,8 @@ public class Graph {
      * @return
      */
     public List<Node> getConnectionComponents(Node n) {
+        renewMatricesIfNeeded();
+
         List<Node> reachableNodes = new ArrayList<>();
 
         for (int i = 0; i < wegMatrix.side(); i++) {
@@ -204,7 +211,6 @@ public class Graph {
     }
 
     public boolean isConnected() {
-        // oder: haben alle knoten zu mindestens einem anderen knoten einen weg?
         return getComponents().size() == 1;
     }
 
@@ -273,10 +279,10 @@ public class Graph {
     public List<Node> getArticulations() {
         List<Node> articulations = new ArrayList<>();
 
+        final int componentsBeforeDeletion = getComponents().size();
+
         for (Node node : nodes) {
             Graph newGraph = new Graph(this);
-
-            int componentsBeforeDeletion = newGraph.getComponents().size();
 
             newGraph.removeNode(node);
 
@@ -303,7 +309,7 @@ public class Graph {
                     int componentsAfterDeletion = getComponents().size();
 
                     if (componentsAfterDeletion > componentsBeforeDeletion) {
-                        bridges.add("{" + row + ";" + column + "}");
+                        bridges.add("{" + (row + 1) + ";" + (column + 1) + "}");
                     }
 
                     adjacencyMatrix.set(row, column, 1);
