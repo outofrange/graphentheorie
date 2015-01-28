@@ -41,6 +41,10 @@ final class NodeBox extends JButton {
         }
     }
 
+    boolean isMarked() {
+        return marked;
+    }
+
     @Override
     public String toString() {
         return "Button " + posX + " / " + posY + " (" + (!marked ? "not " : "") + "selected)";

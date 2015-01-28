@@ -69,4 +69,11 @@ public abstract class IntegerSquareMatrix extends IntegerMatrix {
 	public abstract void expand(int nodesToExpand);
 
     public abstract void shrink(int nodesToShrink);
+
+    public void setValueInRowAndColumn(int rowAndColumn, int value) {
+        for (int i = 0; i < side(); i++) {
+            set(i, rowAndColumn, value);
+            set(rowAndColumn, i, value);
+        }
+    }
 }

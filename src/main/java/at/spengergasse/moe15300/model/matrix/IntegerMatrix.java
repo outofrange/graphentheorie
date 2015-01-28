@@ -35,7 +35,7 @@ public abstract class IntegerMatrix implements Cloneable {
 		StringBuilder sb = new StringBuilder(height() * width() * 2);
 		for (int row = 0; row < height(); row++) {
 			for (int column = 0; column < width(); column++) {
-				sb.append(String.format("%-3d", get(row, column)));
+				sb.append(String.format("%-4d", get(row, column)));
 			}
 			sb.append(linebreak);
 		}

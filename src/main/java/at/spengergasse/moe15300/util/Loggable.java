@@ -6,5 +6,5 @@ import java.lang.annotation.*;
 @Target(ElementType.FIELD)
 @Documented
 public @interface Loggable {
-    //for slf4j
+    // for slf4j
 }

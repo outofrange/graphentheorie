@@ -1,7 +1,5 @@
 package at.spengergasse.moe15300;
 
-import at.spengergasse.moe15300.model.matrix.IntegerMatrix;
-import at.spengergasse.moe15300.model.matrix.implementation.SquareMatrixArrayList;
 import at.spengergasse.moe15300.util.Loggable;
 import at.spengergasse.moe15300.view.AdjacencyFrame;
 import org.slf4j.Logger;
@@ -9,7 +7,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.swing.*;
-import java.util.List;
 
 public class Main {
     @Loggable
@@ -22,8 +19,7 @@ public class Main {
             log.warn("Couldn't set look and feel to system default.", e);
         }
 
-		ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:appContext.xml");
-		ctx.getBean("adjacencyFrame", AdjacencyFrame.class);
-        //AppContextProvider.getContext().getBean("adjacencyFrame", AdjacencyFrame.class);
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:appContext.xml");
+        ctx.getBean("adjacencyFrame", AdjacencyFrame.class);
     }
 }

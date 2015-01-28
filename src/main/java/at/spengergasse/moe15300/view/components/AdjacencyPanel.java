@@ -1,6 +1,7 @@
 package at.spengergasse.moe15300.view.components;
 
-import at.spengergasse.moe15300.model.Graph;
+import at.spengergasse.moe15300.model.graph.Graph;
+import at.spengergasse.moe15300.model.graph.Node;
 import at.spengergasse.moe15300.util.AppContextProvider;
 import at.spengergasse.moe15300.util.Loggable;
 import at.spengergasse.moe15300.view.AdjacencyFrame;
@@ -10,8 +11,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,9 +50,9 @@ public class AdjacencyPanel extends JPanel {
     }
 
     public void addNode() {
-        log.debug("Adding node. Currently  " + nodeCount + " nodes displayed.");
+        log.debug("Adding node. Currently {} nodes displayed.", nodeCount + 1);
 
-        graph.addVertice();
+        graph.addNode();
 
         for (int row = 0; row < nodeCount; row++) {
             boxes.get(row).add(createNewNodeBox(nodeCount, row));
@@ -70,11 +69,11 @@ public class AdjacencyPanel extends JPanel {
 
     public void removeNode() {
         if (nodeCount > 2) {
-            graph.removeVertice();
+            graph.removeLastNode();
 
             boxes.remove(boxes.size() - 1);
-            for (int i = 0; i < boxes.size(); i++) {
-                boxes.get(i).remove(boxes.get(i).size() - 1);
+            for (List<NodeBox> box : boxes) {
+                box.remove(box.size() - 1);
             }
 
             nodeCount--;
@@ -104,15 +103,18 @@ public class AdjacencyPanel extends JPanel {
         checkBox.setX(x);
         checkBox.setY(y);
 
-        checkBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                toggleButton(x, y);
-                if (!parent.isEdgeDirected() && x != y) {
-                    toggleButton(y, x);
+        checkBox.addActionListener(e -> {
+            if (x != y) {
+                if (! boxes.get(x).get(y).isMarked()) {
+                    graph.addEdge(new Node(x), new Node(y));
+                } else {
+                    graph.removeEdge(new Node(x), new Node(y));
                 }
+                boxes.get(x).get(y).toggleButton();
+                boxes.get(y).get(x).toggleButton();
 
                 if (graph.isDirected()) {
+
                     parent.getDirectedBox().setSelected(true);
                     parent.getDirectedBox().setEnabled(false);
                 } else {
@@ -127,11 +129,8 @@ public class AdjacencyPanel extends JPanel {
     }
 
     public void toggleButton(final int x, final int y) {
-        boxes.get(y).get(x).toggleButton();
-        graph.toggleEdge(y, x);
-    }
-
-    public Graph getGraph() {
-        return graph;
+        if (x != y) {
+            boxes.get(y).get(x).toggleButton();
+        }
     }
 }

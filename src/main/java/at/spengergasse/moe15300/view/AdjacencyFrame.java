@@ -1,7 +1,7 @@
 package at.spengergasse.moe15300.view;
 
 
-import at.spengergasse.moe15300.model.Graph;
+import at.spengergasse.moe15300.model.graph.Graph;
 import at.spengergasse.moe15300.util.AppContextProvider;
 import at.spengergasse.moe15300.util.Loggable;
 import at.spengergasse.moe15300.view.components.AdjacencyPanel;
@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -64,13 +63,12 @@ public class AdjacencyFrame extends JFrame {
         mainPanel.add(computePanel, BorderLayout.SOUTH);
 
         controlPanel.add(nodeControlPanel, BorderLayout.CENTER);
-        controlPanel.add(directedPanel, BorderLayout.EAST);
-
         nodeControlPanel.add(addNodeButton);
         nodeControlPanel.add(removeNodeButton);
 
-        directedPanel.add(directedLabel);
-        directedPanel.add(directedBox);
+        // controlPanel.add(directedPanel, BorderLayout.EAST);
+        // directedPanel.add(directedLabel);
+        // directedPanel.add(directedBox);
 
         computePanel.add(computeResultsButton, BorderLayout.CENTER);
         computePanel.add(computeAutoPanel, BorderLayout.EAST);
